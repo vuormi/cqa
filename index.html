@@ -39,7 +39,6 @@
       --cq-border: #384066;
     }
 
-    /* Шапка та навігація */
     .cq-header {
       max-width: 1120px;
       margin: 0 auto;
@@ -116,7 +115,6 @@
       font-size: 15px;
     }
 
-    /* Основна сітка та контейнери */
     .cq-main {
       max-width: 1120px;
       margin: 0 auto;
@@ -148,7 +146,6 @@
       box-shadow: 0 6px 20px rgba(40, 45, 71, 0.04);
     }
 
-    /* Типографіка та елементи */
     .cq-kicker {
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -185,7 +182,6 @@
       flex-wrap: wrap;
     }
 
-    /* Hero-секція */
     .cq-hero {
       background: var(--cq-hero);
       color: #fff9e8;
@@ -269,7 +265,6 @@
         .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
-    /* Кнопки */
     .cq-btn {
       display: inline-flex;
       align-items: center;
@@ -295,7 +290,6 @@
     }
     .cq-hero .cq-btn.ghost { border-color: rgba(255,255,255,0.25); color: #fff; }
 
-    /* Прогрес-бар */
     .cq-progress {
       width: 100%;
       height: 12px;
@@ -312,7 +306,6 @@
       transition: width 0.3s ease;
     }
 
-    /* Редактор та перегляд у Виклику */
     .challenge-editor {
       width: 100%;
       min-height: 120px;
@@ -343,7 +336,6 @@
       text-align: center;
     }
 
-    /* Поля форми та Нагороди */
     .cq-field { display: flex; flex-direction: column; gap: 6px; }
     .cq-field label { font-size: 13px; font-weight: 800; }
     .cq-field input, .cq-field select, .cq-field textarea {
@@ -367,7 +359,6 @@
     }
     .reward-option.locked { opacity: 0.6; }
 
-    /* Палітри */
     .palette-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -422,7 +413,6 @@
   <main class="cq-main" id="app"></main>
 
   <script>
-    // --- 1. ДАНІ ГРИ ---
     const PALETTES = [
       { id: "garden", name: "Сад пригод", desc: "Зелений акцент і сонячні нагороди", colors: ["#f7f4e9", "#188369", "#f1c544", "#282d47"], vars: { page: "#f7f4e9", surface: "#fffefa", ink: "#282d47", muted: "#77798a", primary: "#188369", accent: "#f1c544", hero: "#282d47", border: "#e3dfd2" } },
       { id: "ocean", name: "Морська хвиля", desc: "Бірюза, глибока синь і свіже небо", colors: ["#eff7f8", "#147d9b", "#f2b84b", "#153947"], vars: { page: "#eff7f8", surface: "#fbffff", ink: "#17313e", muted: "#5e727a", primary: "#147d9b", accent: "#f2b84b", hero: "#153947", border: "#cbdfe5" } },
@@ -457,7 +447,6 @@
       { id: "night", name: "Нічна орбіта", desc: "Темний космічний режим", unlock: 100 }
     ];
 
-    // --- 2. СТАН ТА ЗБЕРЕЖЕННЯ ---
     const defaultState = {
       xp: 0,
       completed: [],
@@ -531,7 +520,6 @@
       return String(str).replace(/[<>&"']/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;" }[c]));
     }
 
-    // --- 3. ЕКРАНИ СТОРІНОК ---
       function illustrationData(index) {
         const colors = ["#188369", "#f1c544", "#147d9b", "#9148a7", "#a84424"];
         const color = colors[index % colors.length];
@@ -921,7 +909,6 @@
       `;
     }
 
-    // --- 4. ДІЇ КОРИСТУВАЧА ---
     window.openTask = function(idx) {
       currentTaskIndex = idx;
       location.hash = "#/challenge";
@@ -1054,7 +1041,6 @@
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
-    // --- 5. МАРШРУТИЗАТОР ---
     function renderRoute() {
       const hash = location.hash.replace(/^#/, "") || "/";
       const app = document.getElementById("app");
