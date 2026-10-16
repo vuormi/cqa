@@ -59,6 +59,12 @@
       color: var(--cq-ink);
       text-decoration: none;
     }
+      .cq-brand img {
+        display: block;
+        width: 80px;
+        height: 80px;
+        flex: 0 0 80px;
+      }
 
     .cq-brand-dot { color: var(--cq-primary); }
 
@@ -224,6 +230,44 @@
     }
 
     .stat-row span { font-size: 13px; color: #c7cad9; }
+      .creative-note {
+        padding: 32px;
+        color: #fff9e8;
+        background: linear-gradient(135deg, rgba(24, 131, 105, 0.94), rgba(40, 45, 71, 0.94));
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 28px;
+        opacity: 0.92;
+        transform: rotate(-3deg);
+        animation: note-float 5s ease-in-out infinite alternate;
+      }
+
+      @keyframes note-float {
+        from { transform: rotate(-3deg) translate(-4px, -3px); }
+        to { transform: rotate(2deg) translate(5px, 4px); }
+      }
+
+      .image-gallery {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .image-gallery img {
+        display: block;
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+        border: 1px solid var(--cq-border);
+        border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(40, 45, 71, 0.12);
+      }
+
+      .image-gallery img:nth-child(3n + 1) { height: 160px; }
+      .image-gallery img:nth-child(3n + 2) { align-self: end; border-radius: 50% 18px 50% 18px; }
+
+      @media (max-width: 760px) {
+        .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
 
     /* Кнопки */
     .cq-btn {
@@ -360,6 +404,8 @@
   <header class="cq-header">
     <a href="#/" class="cq-brand">
       <span class="avatar-mark" style="background:#282d47;color:#f1c544;">&lt;/&gt;</span>
+      <a href="#/" class="cq-brand" aria-label="CodeQuest — на головну">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='20' fill='%23282d47'/%3E%3Cpath d='M20 22h40v36H20z' fill='none' stroke='%23f1c544' stroke-width='4'/%3E%3Cpath d='m34 32-8 8 8 8m12-16 8 8-8 8' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E" width="80" height="80" alt="Логотип CodeQuest — головна сторінка" />
       <span>CodeQuest<span class="cq-brand-dot">.</span></span>
     </a>
     <nav class="cq-nav" id="main-nav">
@@ -421,7 +467,12 @@
         name: "Мандрівник",
         goal: "10 хвилин щодня",
         paletteId: "garden",
-        bio: "Вчуся створювати інтернет власноруч."
+          bio: "Вчуся створювати інтернет власноруч.",
+          email: "",
+          practiceDate: "",
+          practiceMinutes: 10,
+          favoriteColor: "#188369",
+          reminder: false
       }
     };
 
@@ -481,9 +532,17 @@
     }
 
     // --- 3. ЕКРАНИ СТОРІНОК ---
+      function illustrationData(index) {
+        const colors = ["#188369", "#f1c544", "#147d9b", "#9148a7", "#a84424"];
+        const color = colors[index % colors.length];
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160"><rect width="240" height="160" fill="#f7f4e9"/><circle cx="${45 + index * 13}" cy="${48 + index * 5}" r="34" fill="${color}" opacity=".85"/><path d="M20 135 Q80 ${55 + index * 3} 140 120 T230 65 V160 H20Z" fill="#282d47" opacity=".82"/><circle cx="190" cy="35" r="12" fill="#f1c544"/></svg>`;
+        return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+      }
+
     function renderHome() {
       const lvl = getLevel(state.xp);
       const prog = getLevelProgress(state.xp);
+        const gallery = Array.from({ length: 10 }, (_, i) => `<img src="${illustrationData(i)}" alt="Авторська ілюстрація про вебкодинг ${i + 1}" loading="lazy" />`).join("");
       return `
         <section class="cq-hero">
           <div>
@@ -501,10 +560,11 @@
             </div>
           </div>
           <div class="cq-card" style="background:#1e2238;border-color:#3a4166;color:#f1c544;font-family:'DM Mono',monospace;padding:28px;">
-            <div style="color:#77798a;margin-bottom:12px;">// index.html</div>
-            <div>&lt;h1&gt;Привіт, світе!&lt;/h1&gt;</div>
-            <div style="color:#68b89a;margin-top:8px;">color: #188369;</div>
-            <div style="color:#f28c73;margin-top:8px;">const score = 100;</div>
+           <div class="creative-note">
+            <div class="cq-kicker" style="color:#f1c544;margin-bottom:12px;">Ідея для першої сторінки</div>
+            <div class="cq-mono">&lt;h1&gt;Привіт, світе!&lt;/h1&gt;</div>
+            <div class="cq-mono" style="color:#b8efd9;margin-top:8px;">color: #188369;</div>
+            <div class="cq-mono" style="color:#ffd2bc;margin-top:8px;">const score = 100;</div>
           </div>
         </section>
 
@@ -535,6 +595,16 @@
             </article>
           </div>
         </section>
+
+          <section style="padding:28px 0 36px;">
+            <div class="cq-pagehead">
+              <div>
+                <div class="cq-kicker">Галерея</div>
+                <h2 class="cq-title" style="font-size:32px;">Кольори та форми для натхнення</h2>
+              </div>
+            </div>
+            <div class="image-gallery">${gallery}</div>
+          </section>
 
         <section class="cq-grid" style="margin-top:10px;">
           <div class="cq-card span-7">
@@ -604,7 +674,16 @@
           <aside class="cq-card span-4" style="background:var(--cq-hero);color:#fff9e8;align-self:start;">
             <div class="cq-kicker" style="color:#a6dec7;">Порада майстра</div>
             <h2 style="font:700 26px 'Space Grotesk';margin:10px 0;">Не вчи напам’ять. Грайся.</h2>
-            <p style="color:#c9cbd2;margin-bottom:20px;">Зміни один символ, натисни перевірку й подивись, що сталося. Так код швидко стає зрозумілим.</p>
+            <p style="color:#c9cbd2;margin-bottom:12px;">Зміни один символ, натисни перевірку й подивись, що сталося.</p>
+            <ul style="padding-left:20px;color:#c9cbd2;margin-bottom:20px;">
+              <li>Основи вебсторінки
+                <ul style="padding-left:20px;">
+                  <li>HTML: структура і вміст</li>
+                  <li>CSS: кольори та оформлення</li>
+                </ul>
+              </li>
+              <li>JavaScript: взаємодія</li>
+            </ul>
             <a href="#/challenge" class="cq-btn gold">До виклику →</a>
           </aside>
         </div>
@@ -745,6 +824,26 @@
               <div class="cq-field span-12">
                 <label for="prof-bio">Що хочеш створити?</label>
                 <textarea id="prof-bio" rows="2" maxlength="110">${escapeHtml(state.profile.bio)}</textarea>
+              </div>
+              <div class="cq-field span-6">
+                <label for="prof-email">Електронна пошта</label>
+                <input id="prof-email" type="email" value="${escapeHtml(state.profile.email || "")}" autocomplete="email" />
+              </div>
+              <div class="cq-field span-6">
+                <label for="prof-date">Дата наступної практики</label>
+                <input id="prof-date" type="date" value="${escapeHtml(state.profile.practiceDate || "")}" />
+              </div>
+              <div class="cq-field span-6">
+                <label for="prof-minutes">Хвилин на практику: <output id="minutes-output">${Number(state.profile.practiceMinutes) || 10}</output></label>
+                <input id="prof-minutes" type="range" min="5" max="60" step="5" value="${Number(state.profile.practiceMinutes) || 10}" oninput="document.getElementById('minutes-output').value=this.value" />
+              </div>
+              <div class="cq-field span-6">
+                <label for="prof-color">Мій улюблений колір</label>
+                <input id="prof-color" type="color" value="${/^#[0-9a-f]{6}$/i.test(state.profile.favoriteColor) ? state.profile.favoriteColor : '#188369'}" style="height:44px;padding:4px;" />
+              </div>
+              <div class="cq-field span-12" style="flex-direction:row;align-items:center;">
+                <input id="prof-reminder" type="checkbox" ${state.profile.reminder ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--cq-primary);" />
+                <label for="prof-reminder">Нагадувати про щоденну практику</label>
               </div>
               <div class="cq-field span-12">
                 <label>Палітра сайту</label>
@@ -908,6 +1007,11 @@
       state.profile.name = document.getElementById("prof-name").value.trim() || "Мандрівник";
       state.profile.goal = document.getElementById("prof-goal").value;
       state.profile.bio = document.getElementById("prof-bio").value.trim();
+      state.profile.email = document.getElementById("prof-email").value.trim();
+      state.profile.practiceDate = document.getElementById("prof-date").value;
+      state.profile.practiceMinutes = Number(document.getElementById("prof-minutes").value);
+      state.profile.favoriteColor = document.getElementById("prof-color").value;
+      state.profile.reminder = document.getElementById("prof-reminder").checked;
       saveState();
       document.getElementById("prof-status").textContent = "✓ Збережено!";
     };
